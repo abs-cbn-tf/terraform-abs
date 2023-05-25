@@ -38,7 +38,7 @@ policy_arn is the ARN of the IAM policy to be attached to the IAM role.
 ami specifies the ID of the Amazon Machine Image (AMI) to use for the EC2 instance.
 instance_type defines the EC2 instance type. ```
 
-**Module Inputs**
+Module Inputs
 
 **region: The AWS region where the EC2 instance will be created.
 role_name: The name of the IAM role associated with the EC2 instance.
@@ -47,7 +47,7 @@ policy_arn: The ARN of the IAM policy to be attached to the IAM role.
 ami: The ID of the Amazon Machine Image (AMI) to use for the EC2 instance.
 instance_type: The EC2 instance type.
 key_name: The name of the key pair used for SSH access to the instance.
-instance_tags: A map of tags to be assigned to the EC2 instance.**
+instance_tags: A map of tags to be assigned to the EC2 instance.
 
 
 key_name is the name of the key pair used for SSH access to the instance.
