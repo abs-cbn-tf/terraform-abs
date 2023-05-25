@@ -36,8 +36,11 @@ Route Table configuration: Customize the route tables, routes, and associations 
 
 **The module inputs are defined within the main.tf file and can be modified according to your requirements. Some of the key inputs include:**
 
-region: The AWS region where the VPC and associated resources will be created.
-vpc_cidr: The CIDR block for the VPC.
-egress_cidr_blocks: The list of CIDR blocks for egress traffic.
-Customize the inputs for subnets, security groups, and route tables according to your needs.
+>region: The AWS region where the VPC and associated resources will be created
+
+>vpc_cidr: The CIDR block for the VPC.
+
+>egress_cidr_blocks: The list of CIDR blocks for egress traffic.
+
+>Customize the inputs for subnets, security groups, and route tables according to your needs.
 
