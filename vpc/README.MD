@@ -23,9 +23,13 @@ This Terraform configuration sets up a VPC with associated subnets, security gro
 Modify the Terraform code in main.tf with your desired configuration details:
 
 AWS provider configuration: Replace the region value with your desired AWS region and configure the appropriate profile.
+
 VPC configuration: Modify the VPC's cidr_block and tags according to your requirements.
+
 Security Group configuration: Adjust the name, description, ingress, and egress rules to meet your needs.
+
 Subnet configuration: Customize the subnet configurations for the desired availability zones, associating them with the appropriate route tables.
+
 Route Table configuration: Customize the route tables, routes, and associations for public and private subnets.
 
 
