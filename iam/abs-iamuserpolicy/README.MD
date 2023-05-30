@@ -33,4 +33,4 @@ Follow the steps below to use this Terraform configuration:
 Below Components can be created :
 
 **  Iam Policy ** : Creates User, Attach policy, multiple policy, Updated Policy and Remove Policy 
-![image](https://github.com/abs-cbn-tf/terraform-abs/assets/133660640/84483261-e4fe-43d9-81b2-52fafd9abbf2)
+
