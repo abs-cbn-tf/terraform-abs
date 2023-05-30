@@ -24,3 +24,10 @@ The resource inputs are defined within the main.tf file and can be modified acco
 **Outputs**
 
 >The outputs section in main.tf defines the output value for the KMS key ARNs. Modify the output configuration as needed.
+
+Below Components can be created: 
+
+**KMS** : Creates KMS Key, Delete the KMS Key, Update the Deletion window and Create multiple kms key
+
+![image](https://github.com/abs-cbn-tf/terraform-abs/assets/133660640/9f29da97-3481-4b92-bdbc-196f0d0f0ea0)
+
