@@ -18,3 +18,12 @@ The module inputs are defined within the main.tf file and can be modified accord
 >description: The description of the security group.
 
 >ingress_rules: The list of ingress rules defining the allowed traffic.
+
+
+
+![image](https://github.com/abs-cbn-tf/terraform-abs/assets/133660640/44a53811-f02e-4db2-9756-e080c9164208)
+
+
+Below components can be created .
+
+Security Group : Create Sec group , Asscociate Sec Grp with Resource, Manage Sec Grp rules and Update Existing Security Group
