@@ -57,3 +57,8 @@ instance_tags is a map of tags to be assigned to the EC2 instance.
 Note: Make sure to replace the placeholder values with your own values according to your requirements.
 
 Please refer to the appropriate module documentation for further information on the ec2-instance-module used in this example. ```
+
+Below components can be created :
+
+Iam Service Policy : Creates the policy, Creates ec2 instance, Creates instance profile, Attach the policy and Deletes the policy.
+
