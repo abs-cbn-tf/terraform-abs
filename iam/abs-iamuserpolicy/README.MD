@@ -32,5 +32,5 @@ Follow the steps below to use this Terraform configuration:
 
 Below Components can be created :
 
-**  Iam Policy ** : Creates User, Attach policy, multiple policy, Updated Policy and Remove Policy 
+**IAM POLICY** : Creates User, Attach policy, multiple policy, Updated Policy and Remove Policy 
 
