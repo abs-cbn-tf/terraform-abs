@@ -60,5 +60,5 @@ Please refer to the appropriate module documentation for further information on 
 
 Below components can be created :
 
-Iam Service Policy : Creates the policy, Creates ec2 instance, Creates instance profile, Attach the policy and Deletes the policy.
+**Iam Service Policy** : Creates the policy, Creates ec2 instance, Creates instance profile, Attach the policy and Deletes the policy.
 
