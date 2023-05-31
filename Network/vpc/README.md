@@ -67,10 +67,11 @@ Terraform plan
 The above command will give the detailed output of the resources which is going to create 
 ```
 
+```bash
 Terraform apply 
 
 will implement and execute the resources.
-
+```
 
 ## Creating one vpc by below command
 
