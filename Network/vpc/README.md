@@ -45,12 +45,11 @@ Route Table configuration: Customize the route tables, routes, and associations 
 >Customize the inputs for subnets, security groups, and route tables according to your needs.
 
 
-![image](https://github.com/abs-cbn-tf/terraform-abs/assets/133660640/035a7c4b-c407-4ced-82a0-88e514ff617c)
 
 **Below are the components which can be created .**
 
-•	**VPC** - create , update , delete and add multiple vpc's
- . **Private Subnets** - create private subnets , update cidr subnets , delete
- . **Public Subnets** - Create public subnets , modify subnets , destroy
- . **Nat Gateway** - Create , Delete 
- . **Internet Gateway** - Create, destroy
+> • **VPC** - create , update , delete and add multiple vpc's
+> . **Private Subnets** - create private subnets , update cidr subnets , delete
+> . **Public Subnets** - Create public subnets , modify subnets , destroy
+> . **Nat Gateway** - Create , Delete 
+> . **Internet Gateway** - Create, destroy
