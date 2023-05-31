@@ -104,4 +104,8 @@ terraform destroy -target=module.vpc
 ```
 
 
+# To Create one subnet 
 
+```bash
+terraform apply -target=module.vpc.aws_subnet.private_app_subnet_az1
+```
