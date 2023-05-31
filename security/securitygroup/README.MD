@@ -7,7 +7,7 @@ Security Group module configuration: Adjust the source value to the module locat
 
 Module input variables: Replace the vpc_id, name, description, and ingress_rules values with your desired configuration. ```shell
 
-**Module Inputs**
+# Module Inputs
 
 The module inputs are defined within the main.tf file and can be modified according to your requirements. Some of the key inputs include:
 
@@ -17,13 +17,45 @@ The module inputs are defined within the main.tf file and can be modified accord
 
 >description: The description of the security group.
 
->ingress_rules: The list of ingress rules defining the allowed traffic.
+>ingress/egress_rules: The list of ingress rules defining the allowed traffic.
 
 
 
-![image](https://github.com/abs-cbn-tf/terraform-abs/assets/133660640/44a53811-f02e-4db2-9756-e080c9164208)
+
+#Below components can be created .
+
+>Creates: Security Group 
+
+>Configure: Asscociate Sec Grp with Resource
+
+>Modify: Manage Sec Grp rules and Update Existing Security Group
 
 
-Below components can be created .
+#Usage
 
-Security Group : Create Sec group , Asscociate Sec Grp with Resource, Manage Sec Grp rules and Update Existing Security Group
+```bash
+terraform plan
+```
+
+Above command will list the resource needs to be created
+
+
+```bash
+terraform apply
+```
+
+Above command will creates and implements the sec group creations
+
+
+```bash
+terraform apply -target=module.security_group.aws_security_group.security_group
+```
+
+Above command will single security group if we have declared multiple sec groups.
+
+```bash
+terraform destroy 
+```
+
+Above command will delete all sec groups.
+
