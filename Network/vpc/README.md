@@ -72,13 +72,13 @@ Terraform apply
 will implement and execute the resources.
 
 
-# Creating one vpc by below command
+## Creating one vpc by below command
 
 ```bash
 terraform apply target=module.vpc
 ```
 
-# Creating second vpc
+## Creating Second VPC
 
 ```bash
  terraform apply target=module.vpc2
