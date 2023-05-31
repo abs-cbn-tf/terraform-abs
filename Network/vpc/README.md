@@ -74,23 +74,23 @@ will implement and execute the resources.
 
 Creating one vpc by below command
 
-**terraform apply target=module.vpc**
+# terraform apply target=module.vpc
 
 Creating second vpc
 
-**terraform apply target=module.vpc2**
+# terraform apply target=module.vpc2
 
 Creating complete vpc's
 
-**Terraform apply**
+# Terraform apply
 
 To Destroy
 
-**Terraform destroy**
+# Terraform destroy 
 
 to destroy one vpc
 
-**terraform destroy -target=module.vpc**
+# terraform destroy -target=module.vpc
 
 
 
