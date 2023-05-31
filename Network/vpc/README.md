@@ -72,26 +72,35 @@ Terraform apply
 will implement and execute the resources.
 
 
-Creating one vpc by below command
+# Creating one vpc by below command
 
-# terraform apply target=module.vpc
+```bash
+terraform apply target=module.vpc
+```
 
-Creating second vpc
+# Creating second vpc
 
-# terraform apply target=module.vpc2
+```bash
+ terraform apply target=module.vpc2
+```
 
-Creating complete vpc's
+# Creating complete vpc's
 
-# Terraform apply
+```bash
+terraform apply
+```
 
-To Destroy
+# To Destroy
 
-# Terraform destroy 
+```bash
+terraform destroy 
+```
 
-to destroy one vpc
+# To destroy one vpc
 
-# terraform destroy -target=module.vpc
-
+```bash
+terraform destroy -target=module.vpc
+```
 
 
 
