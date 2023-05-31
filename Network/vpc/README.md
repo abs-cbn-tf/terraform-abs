@@ -65,7 +65,7 @@ Route Table configuration: Customize the route tables, routes, and associations 
 Terraform plan 
 
 The above command will give the detailed output of the resources which is going to create 
-
+```
 
 Terraform apply 
 
