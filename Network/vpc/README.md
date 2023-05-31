@@ -49,9 +49,13 @@ Route Table configuration: Customize the route tables, routes, and associations 
 **Below are the components which can be created .**
 
 >VPC: - create , update , delete and add multiple vpc's
+
 >Private Subnets: - create private subnets , update cidr subnets , delete
+
 >Public Subnets: - Create public subnets , modify subnets , destroy
+
 >Nat Gateway: - Create , Delete 
+
 >Internet Gateway: - Create, destroy
 
 **Usage** 
