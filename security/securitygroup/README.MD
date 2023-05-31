@@ -29,6 +29,7 @@ The module inputs are defined within the main.tf file and can be modified accord
 >Configure: Asscociate Sec Grp with Resource
 
 >Modify: Manage Sec Grp rules and Update Existing Security Group
+```
 
 
 #Usage
