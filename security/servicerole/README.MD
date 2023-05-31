@@ -14,6 +14,7 @@ This Terraform configuration sets up an EC2 instance in the AWS environment usin
 
    ```shell
    git clone <repository-url>
+   ```
 
 ```shell
 
@@ -36,7 +37,8 @@ role_assume_policy: defines the trust policy allowing EC2 to assume the specifie
 policy_arn: is the ARN of the IAM policy to be attached to the IAM role.
 
 ami specifies the ID of the Amazon Machine Image (AMI) to use for the EC2 instance.
-instance_type defines the EC2 instance type. ```
+instance_type defines the EC2 instance type. 
+```
 
 #Module Inputs
 
