@@ -67,11 +67,31 @@ Terraform plan
 The above command will give the detailed output of the resources which is going to create 
 
 
-```shell
-
 Terraform apply 
 
-will implement and execute the resources .
+will implement and execute the resources.
+
+
+Creating one vpc by below command
+
+**terraform apply target=module.vpc**
+
+Creating second vpc
+
+**terraform apply target=module.vpc2**
+
+Creating complete vpc's
+
+**Terraform apply**
+
+To Destroy
+
+**Terraform destroy**
+
+to destroy one vpc
+
+**terraform destroy -target=module.vpc**
+
 
 
 
