@@ -29,8 +29,44 @@ Follow the steps below to use this Terraform configuration:
 
    ```bash
    terraform init
+   ```
 
-Below Components can be created :
+**Below Components can be created :**
 
-**IAM POLICY** : Creates User, Attach policy, multiple policy, Updated Policy and Remove Policy 
+**IAM POLICY** : 
+
+> Creates : User , Policy 
+> Policy :  Attach policy, multiple policy 
+> Changes: Update Policy and Remove Policy 
+
+
+# Usage
+
+```bash
+Terraform apply 
+```
+
+Above command will create user , policy and attach to the user 
+
+
+
+```bash
+terraform apply -target=module.iam_user.aws_iam_user.iam_user
+```
+
+Above command will create only iam user 
+
+
+```bash
+terraform apply -target=module.iam_user.aws_iam_policy.iam_policy
+```
+
+Above command will create iam policy 
+
+
+```bash
+terraform destroy -target=module.iam_user.aws_iam_user.iam_user
+```
+
+Above command will delete the user like wise we can delete individual modules.
 
