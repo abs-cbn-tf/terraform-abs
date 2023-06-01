@@ -88,13 +88,13 @@ terraform apply -target=module.ec2_instance.aws_iam_role.ec2_role
 Above command will create the ec2 role 
 
 
-```bash
+```shell
 terraform apply -target=module.ec2_instance.aws_iam_instance_profile.ec2_instance_profile
 ```
 
 Above command will attach instance profile to the ec2 instance
 
-```bash
+```shell
 terraform destroy
 ```
 
