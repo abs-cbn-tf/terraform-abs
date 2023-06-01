@@ -58,14 +58,14 @@ Above command will create only iam user
 
 
 ```bash
-terraform apply -target=module.iam_user.aws_iam_policy.iam_policy
+terraform apply -target=module.iam_user.aws_iam_policy.iam_policy[0]
 ```
 
 Above command will create iam policy 
 
 
 ```bash
-terraform destroy -target=module.iam_user.aws_iam_user.iam_user
+terraform destroy -target=module.iam_user.aws_iam_user.iam_user[0]
 ```
 
 Above command will delete the user like wise we can delete individual modules.
