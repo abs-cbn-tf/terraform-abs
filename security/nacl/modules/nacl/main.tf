@@ -1,40 +1,36 @@
 resource "aws_network_acl" "nacl" {
   vpc_id = var.vpc_id
+  tags = var.nacl_tags
+#  tags   = {
+#    Name = var.name
+#    env = var.env
+#    project = var.project
+#    foo = var.foo
+#  }
+}
 
-  dynamic "subnet" {
-    for_each = var.subnets
-    content {
-      subnet_id = subnet.value
-    }
-  }
+resource "aws_network_acl_rule" "ingress_rule" {
+  count            = length(var.ingress_rules)
+  network_acl_id   = aws_network_acl.nacl.id
+  rule_number      = count.index * 10 + 100
+  rule_action      = "allow"
+  egress           = false
+  protocol         = "6"  # TCP
+  from_port        = var.ingress_rules[count.index].from_port
+  to_port          = var.ingress_rules[count.index].to_port
+  cidr_block       = var.ingress_rules[count.index].cidr_block  # Use "cidr_block" instead of "cidr_blocks"
+}
 
-  dynamic "ingress" {
-    for_each = var.ingress_rules
-    content {
-      rule_number  = ingress.value.rule_number
-      protocol     = ingress.value.protocol
-      action       = ingress.value.action
-      cidr_block   = ingress.value.cidr_block
-      from_port    = ingress.value.from_port
-      to_port      = ingress.value.to_port
-      icmp_code    = ingress.value.icmp_code
-      icmp_type    = ingress.value.icmp_type
-              }
-  }
-
-  dynamic "egress" {
-    for_each = var.egress_rules
-    content {
-      rule_number  = egress.value.rule_number
-      protocol     = egress.value.protocol
-      action       = egress.value.action
-      cidr_block   = egress.value.cidr_block
-      from_port    = egress.value.from_port
-      to_port      = egress.value.to_port
-      icmp_code    = egress.value.icmp_code
-      icmp_type    = egress.value.icmp_type
-    }
-  }
+resource "aws_network_acl_rule" "egress_rule" {
+  count            = length(var.egress_rules)
+  network_acl_id   = aws_network_acl.nacl.id
+  rule_number      = count.index * 10 + 200
+  rule_action      = "allow"
+  egress           = true
+  protocol         = "6"  # TCP
+  from_port        = var.egress_rules[count.index].from_port
+  to_port          = var.egress_rules[count.index].to_port
+  cidr_block       = var.egress_rules[count.index].cidr_block  # Use "cidr_block" instead of "cidr_blocks"
 }
 
 output "nacl_id" {
