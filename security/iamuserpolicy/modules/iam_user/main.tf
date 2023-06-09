@@ -1,5 +1,11 @@
 resource "aws_iam_user" "iam_user" {
   name = var.iam_user_name
+  tags = {
+    env = var.env
+    project = var.project
+    foo = var.foo
+    # Add more tags as needed
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {

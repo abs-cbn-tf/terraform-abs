@@ -72,3 +72,14 @@ EOF
 EOF
   }
 ]
+
+env = "qa"
+project = "iamuser1"
+foo = "bar"
+
+
+env1 = "dev"
+project1 = "iamuser2"
+foo1 = "bar1"
+
+iam_user_name2 = "terraform-user-2"

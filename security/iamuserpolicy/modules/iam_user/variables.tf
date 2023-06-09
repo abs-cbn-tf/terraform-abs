@@ -20,3 +20,15 @@ variable "iam_policies" {
 #}
 
 
+variable "env" {
+ default = "qa"
+}
+
+variable "project" {
+  default = "iamproject"
+}
+
+variable "foo" {
+ default = "bar"
+}
+  
