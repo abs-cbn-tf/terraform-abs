@@ -33,8 +33,20 @@ variable "key_name" {
   type        = string
 }
 
+#variable "instance_tags" {
+#  description = "Additional tags for the EC2 instance"
+#  type        = map(string)
+#}
+
 variable "instance_tags" {
-  description = "Additional tags for the EC2 instance"
-  type        = map(string)
+  type    = map(string)
+  default = {
+    env = "dev"
+    project = "servicerole"
+    foo = "bar"
+ 
+    # Add more tags as needed
+  }
 }
+
 

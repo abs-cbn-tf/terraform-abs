@@ -32,6 +32,9 @@ EOF
 
   instance_tags = {
     Name = "example-instance"
+    env = var.env
+    project = var.project
+    foo = var.foo
   }
 }
 
