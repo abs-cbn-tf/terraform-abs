@@ -18,11 +18,32 @@ egress_cidr_blocks = "0.0.0.0"
 vpc_tags = {
   Name = "vpc1"
   Env  = "dev"
+  project = "vpcproject"
+  foo = "bar"
 }
 private1_subtags = {
   Name = "private_app_subnet_az1_abs"
   Env  = "dev"
 }
+
+
+private2_subtags = {
+  Name = "private_app_subnet_az2_abs"
+  Env  = "dev"
+}
+
+
+privatedata1_subtags = {
+  Name = "private_data_subnet_az1_abs"
+  Env  = "dev"
+}
+
+
+privatedata2_subtags = {
+  Name = "private_data_subnet_az2_abs"
+  Env  = "dev"
+}
+
 project_name2                    = "dev"
 vpc_cidr1                        = "10.1.0.0/16"
 public_subnet_az1_cidr_dev       = "10.1.2.0/24"
@@ -43,9 +64,11 @@ private_data_subnet_az2_dev      = "private_data_subnet_az2_dev"
 vpc_tags2 = {
   Name = "vpc2"
   Env  = "qa"
+  project = "vpc2project"
+  foo = "bar1"
 }
 
-private2_subtags = {
- Name = "private_app_subnet_az1_dev"
- Env = "qa"
-}
+#private2_subtags = {
+# Name = "private_app_subnet_az1_dev"
+# Env = "qa"
+#}
