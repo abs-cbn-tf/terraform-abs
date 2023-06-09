@@ -23,3 +23,13 @@ variable "ingress_rules" {
   }))
 }
 
+variable "security_group_tags" {
+  type    = map(string)
+  default = {
+    env = "dev"
+    project = "secgrp"
+    foo = "bar"
+    # Add more tags as needed
+  }
+}
+

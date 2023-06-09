@@ -19,6 +19,7 @@ resource "aws_security_group" "security_group" {
       cidr_blocks = ingress.value.cidr_blocks
     }
   }
+  tags = var.security_group_tags
 }
 
 #output "security_group_id" {

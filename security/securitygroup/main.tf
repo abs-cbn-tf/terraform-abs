@@ -22,6 +22,12 @@ module "security_group" {
       cidr_blocks = ["10.0.0.0/16"]
     }
   ]
+  security_group_tags = {
+    env = var.env
+    project = var.project
+    foo = var.foo 
+    # Add more tags as needed
+  }
 }
 
 
