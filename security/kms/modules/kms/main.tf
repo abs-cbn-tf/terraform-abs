@@ -5,6 +5,8 @@ resource "aws_kms_key" "kms" {
 
   tags = {
     Name = var.kms_keys[count.index].name
+    Env        = var.env
+    Project     = var.project
   }
 }
 

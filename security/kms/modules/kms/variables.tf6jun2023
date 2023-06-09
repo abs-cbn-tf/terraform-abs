@@ -6,13 +6,10 @@ variable "kms_keys" {
   }))
 }
 
-variable "env1" {}
-variable "project1" {}
+variable "env" { 
+ default = "dev"
+}
 
-#variable "env" { 
-# default = "dev"
-#}
-
-#variable "project" {
-# default = "kms-project"
-#}
+variable "project" {
+ default = "kms-project"
+}
