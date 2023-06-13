@@ -23,4 +23,8 @@ variable "stage_name" {
   type        = string
 }
 
+variable "api_key" {
+  description = "Name for api key"
+  type        = string
+}
 

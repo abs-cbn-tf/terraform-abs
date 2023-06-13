@@ -27,3 +27,9 @@ variable "stage_name" {
   type        = string
   default     = "dev"
 }
+
+variable "api_key" {
+  description = "Name for api key"
+  type        = string
+  default     = "terraform_api_key"
+}

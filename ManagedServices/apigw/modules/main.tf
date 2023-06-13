@@ -3,7 +3,7 @@ data "terraform_remote_state" "lambda_module" {
   backend = "local"
 
   config = {
-    path = "/Users/ronelmigsjordaperez/Documents/terraform-modules-practice/lambda/terraform.tfstate"
+    path = "/Users/ronelmigsjordaperez/Documents/terraform-abs/ManagedServices/lambda/terraform.tfstate"
   }
 }
 
@@ -90,4 +90,33 @@ resource "aws_lambda_permission" "lambda_permission" {
   #   source_arn = "${aws_api_gateway_rest_api.my_rest_api.arn}/*"
   #   source_arn = "arn:aws:execute-api:${var.myregion}:${var.accountId}:${aws_api_gateway_rest_api.my_rest_api.id}/*/${aws_api_gateway_method.method.http_method}${aws_api_gateway_resource.resource.path}"
 
+}
+
+# apigw usage plan w/ API keys
+# no method throttling yet
+resource "aws_api_gateway_usage_plan" "myusageplan" {
+  name = "terraform_usage_plan"
+
+  api_stages {
+    api_id = aws_api_gateway_rest_api.my_rest_api.id
+    stage  = aws_api_gateway_stage.example.stage_name
+  }
+  throttle_settings {
+    burst_limit = 100
+    rate_limit  = 50
+  }
+  quota_settings {
+    limit  = 5000
+    period = "MONTH"
+  }
+}
+
+resource "aws_api_gateway_api_key" "mykey" {
+  name = var.api_key
+}
+
+resource "aws_api_gateway_usage_plan_key" "main" {
+  key_id        = aws_api_gateway_api_key.mykey.id
+  key_type      = "API_KEY"
+  usage_plan_id = aws_api_gateway_usage_plan.myusageplan.id
 }
