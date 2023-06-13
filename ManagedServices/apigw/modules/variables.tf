@@ -28,3 +28,7 @@ variable "api_key" {
   type        = string
 }
 
+variable "usage_plan" {
+  description = "Name for usage plan"
+  type        = string
+}

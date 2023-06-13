@@ -95,7 +95,7 @@ resource "aws_lambda_permission" "lambda_permission" {
 # apigw usage plan w/ API keys
 # no method throttling yet
 resource "aws_api_gateway_usage_plan" "myusageplan" {
-  name = "terraform_usage_plan"
+  name = var.terraform_usage_plan
 
   api_stages {
     api_id = aws_api_gateway_rest_api.my_rest_api.id
