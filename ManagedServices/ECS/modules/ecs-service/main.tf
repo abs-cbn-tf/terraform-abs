@@ -79,9 +79,15 @@ resource "aws_ecs_service" "ecs_service" {
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent         = 200
 
+  load_balancer {
+    target_group_arn = aws_lb_target_group.alb-example.arn
+    container_name   = "my-container"
+    container_port   = 80
+  }
+
   network_configuration {
     subnets = [
-      "subnet-09fbd69c967ec2b13",
+      "subnet-09fbd69c967ec2b13", # Sandbox existing subnets
       "subnet-02e234f573a5e7a53"
     ]                                           # Replace with your subnet IDs
     security_groups  = ["sg-0e028cc09f558e6c8"] # Replace with your security group IDs
@@ -91,30 +97,37 @@ resource "aws_ecs_service" "ecs_service" {
 
 }
 
-# # ECS service role 
-# resource "aws_iam_role" "ecs_service_role" {
-#   name = "var.service_role_name"
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = "sts:AssumeRole"
-#         Effect = "Allow"
-#         Sid    = ""
-#         Principal = {
-#           Service = [
-#             "ecs.amazonaws.com",
-#             "ecs-tasks.amazonaws.com"
-#           ]
-#         }
-#       },
-#     ]
-#   })
-# }
+# Temporarily adding ELB for testing
+resource "aws_lb" "alb-example" {
+  name               = "test-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = ["sg-0e028cc09f558e6c8"] # Sandbox existing security groups
+  subnets = [
+    "subnet-09fbd69c967ec2b13", # Sandbox existing subnets
+    "subnet-02e234f573a5e7a53"
+  ]
+  enable_deletion_protection = false
 
-# resource "aws_iam_role_policy_attachment" "service_attach" {
-#   role       = aws_iam_role.ecs_service_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/aws-service-role/AmazonECSServiceRolePolicy"
-# }
+}
+resource "aws_lb_target_group" "alb-example" {
+  name             = "terraform-target-group"
+  target_type      = "ip"
+  ip_address_type  = "ipv4"
+  port             = 80
+  protocol         = "HTTP"
+  protocol_version = "HTTP1"
+  vpc_id           = "vpc-0cbd8776bdd708ee5"
+}
+
+resource "aws_lb_listener" "alb-example" {
+  load_balancer_arn = aws_lb.alb-example.arn
+  port              = "80"
+  protocol          = "HTTP"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.alb-example.arn
+  }
+}
 
 
