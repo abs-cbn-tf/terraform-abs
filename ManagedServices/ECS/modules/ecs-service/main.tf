@@ -1,6 +1,23 @@
 resource "aws_ecs_task_definition" "taskdef" {
-  family                   = var.task_family
-  container_definitions    = var.container_definitions
+  family = var.task_family
+  # container_definitions = var.container_definitions
+  container_definitions    = <<EOF
+    [
+      {
+        "name": "${var.container_name}",
+        "image": "${var.container_image}",
+        "cpu": ${var.container_cpu},
+        "memory": ${var.container_memory},
+        "portMappings": [
+          {
+            "containerPort": ${var.container_cport},
+            "hostPort": ${var.container_hport},
+            "protocol": "${var.container_protocol}"
+          }
+        ]
+      }  
+    ]
+  EOF
   execution_role_arn       = aws_iam_role.role.arn
   task_role_arn            = aws_iam_role.role.arn
   cpu                      = var.task_cpu
@@ -71,18 +88,20 @@ data "terraform_remote_state" "ecs_cluster_module" {
 # }
 
 resource "aws_ecs_service" "ecs_service" {
-  name            = var.service_name
-  cluster         = data.terraform_remote_state.ecs_cluster_module.outputs.cluster_id
-  task_definition = aws_ecs_task_definition.taskdef.arn
-  desired_count   = 1
+  name                              = var.service_name
+  cluster                           = data.terraform_remote_state.ecs_cluster_module.outputs.cluster_id
+  task_definition                   = aws_ecs_task_definition.taskdef.arn
+  desired_count                     = 1
+  health_check_grace_period_seconds = 300
 
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent         = 200
 
   load_balancer {
     target_group_arn = aws_lb_target_group.alb-example.arn
-    container_name   = "my-container"
-    container_port   = 80
+    container_name   = var.container_name
+    container_port   = 3000
+
   }
 
   network_configuration {
@@ -92,29 +111,24 @@ resource "aws_ecs_service" "ecs_service" {
     ]                                           # Replace with your subnet IDs
     security_groups  = ["sg-0e028cc09f558e6c8"] # Replace with your security group IDs
     assign_public_ip = true
-
   }
-
 }
 
 # Temporarily adding ELB for testing
 resource "aws_lb" "alb-example" {
   name               = "test-lb-tf"
-  internal           = false
   load_balancer_type = "application"
   security_groups    = ["sg-0e028cc09f558e6c8"] # Sandbox existing security groups
   subnets = [
     "subnet-09fbd69c967ec2b13", # Sandbox existing subnets
     "subnet-02e234f573a5e7a53"
   ]
-  enable_deletion_protection = false
-
 }
 resource "aws_lb_target_group" "alb-example" {
   name             = "terraform-target-group"
   target_type      = "ip"
   ip_address_type  = "ipv4"
-  port             = 80
+  port             = 3000
   protocol         = "HTTP"
   protocol_version = "HTTP1"
   vpc_id           = "vpc-0cbd8776bdd708ee5"
@@ -122,7 +136,7 @@ resource "aws_lb_target_group" "alb-example" {
 
 resource "aws_lb_listener" "alb-example" {
   load_balancer_arn = aws_lb.alb-example.arn
-  port              = "80"
+  port              = 80
   protocol          = "HTTP"
   default_action {
     type             = "forward"

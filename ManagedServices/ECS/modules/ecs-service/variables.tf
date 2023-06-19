@@ -24,10 +24,40 @@ variable "network_mode" {
   type        = string
 }
 
-variable "container_definitions" {
-  description = "Container Definitions"
+# variable "container_definitions" {
+#   description = "Network mode for task"
+#   type        = string
+# }
+# Container Definition Variables
+variable "container_name" {
+  description = "Container Name"
   type        = string
 }
+variable "container_image" {
+  description = "Container Image"
+  type        = string
+}
+variable "container_cpu" {
+  description = "Container CPU"
+  type        = string
+}
+variable "container_memory" {
+  description = "Container Memory"
+  type        = string
+}
+variable "container_cport" {
+  description = "Container Container Port"
+  type        = string
+}
+variable "container_hport" {
+  description = "Container Host Port"
+  type        = string
+}
+variable "container_protocol" {
+  description = "Container Protocol"
+  type        = string
+}
+# EOF Container Definitions Variables
 
 variable "requires_compatibilities" {
   description = "Container Definitions"

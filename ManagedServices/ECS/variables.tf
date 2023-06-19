@@ -48,28 +48,65 @@ variable "network_mode" {
   default     = "awsvpc"
 }
 
-variable "container_definitions" {
-  description = "Container Definitions"
-  type        = string
-  default     = <<EOF
-[
-  {
-    "name": "my-container",
-    "image": "nginx:latest",
-    "cpu": 512,
-    "memory": 256,
-    "portMappings": [
-      {
-        "containerPort": 80,
-        "hostPort": 80,
-        "protocol": "tcp"
-      }
-    ]
-  }
-]
-EOF
-}
+# variable "container_definitions" {
+#   description = "Container Definitions"
+#   type        = string
+#   default     = <<EOF
+# [
+#   {
+#     "name": "my-container",
+#     "image": "892339339186.dkr.ecr.ap-southeast-1.amazonaws.com/test-app:latest",
+#     "cpu": 512,
+#     "memory": 256,
+#     "portMappings": [
+#       {
+#         "containerPort": 3000,
+#         "hostPort": 3000,
+#         "protocol": "tcp"
+#       }
+#     ]
+#   }
+# ]
+# EOF
+# }
 
+# Container Definition Variables
+variable "container_name" {
+  description = "Container Name"
+  type        = string
+  default     = "my-container"
+}
+variable "container_image" {
+  description = "Container Image"
+  type        = string
+  default     = "892339339186.dkr.ecr.ap-southeast-1.amazonaws.com/test-app"
+}
+variable "container_cpu" {
+  description = "Container CPU"
+  type        = string
+  default     = 256
+}
+variable "container_memory" {
+  description = "Container Memory"
+  type        = string
+  default     = 512
+}
+variable "container_cport" {
+  description = "Container Container Port"
+  type        = string
+  default     = 3000
+}
+variable "container_hport" {
+  description = "Container Host Port"
+  type        = string
+  default     = 3000
+}
+variable "container_protocol" {
+  description = "Container Protocol"
+  type        = string
+  default     = "tcp"
+}
+# EOF Container Definitions Variables
 variable "requires_compatibilities" {
   description = "Container Definitions"
   type        = string
