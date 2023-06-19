@@ -104,3 +104,10 @@ output "autoscaling_group_name" {
   value = module.autoscaling.autoscaling_group_name
 }
 
+## To-Do
+
+- [ ] Implement SQS queue creation.
+- [ ] Configure autoscaling policies based on SQS queue metrics.
+- [ ] Test and validate the autoscaling behavior.
+- [ ] Customize the module according to your specific requirements.
+- [ ] Update the `variables.tf` file to include additional configuration options if needed.
