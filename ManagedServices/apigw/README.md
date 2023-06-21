@@ -31,3 +31,5 @@ module "apigw_lambda" {
 ## Output
 
 - **api_gateway_invoke_url**: The invoke URL of the API Gateway.
+
+_Note: You can change the values of the Arguments and Attributes by going to the variables.tf file and changing the default value._
