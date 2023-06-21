@@ -12,6 +12,7 @@ module "ecs-service" {
   task_cpu       = var.task_cpu
   task_memory    = var.task_memory
   network_mode   = var.network_mode
+
   # container_definitions = var.container_definitions
   container_name     = var.container_name
   container_image    = var.container_image
@@ -21,11 +22,14 @@ module "ecs-service" {
   container_hport    = var.container_hport
   container_protocol = var.container_protocol
 
-
   requires_compatibilities = var.requires_compatibilities
   operating_system         = var.operating_system
   cpu_architecture         = var.cpu_architecture
   # service 
   service_name      = var.service_name
   service_role_name = var.service_role_name
+  tf_my_cluster     = var.tf_my_cluster
+  # network
+  public_subnets = var.public_subnets
+
 }
