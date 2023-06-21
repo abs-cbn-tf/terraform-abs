@@ -5,7 +5,6 @@ This Terraform module sets up an AWS Lambda function with the necessary resource
 ## Features
 
 - Create and configure an AWS Lambda function.
-- Set up event triggers (e.g., API Gateway) to invoke the Lambda function.
 - Customize the Lambda function code and runtime environment.
 - Configure environment variables, memory allocation, and timeout settings.
 - Grant necessary permissions to access other AWS resources. (e.g., API Gateway).
@@ -14,7 +13,7 @@ This Terraform module sets up an AWS Lambda function with the necessary resource
 
 1. Ensure you have valid AWS credentials set up for Terraform.
 
-2. Main.tf has the following code:
+2. lambda.tf has the following code:
 
 ```hcl
 module "lambda_function" {

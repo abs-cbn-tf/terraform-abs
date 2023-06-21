@@ -1,8 +1,18 @@
 # API Gateway and Lambda Module
 
-This Terraform module sets up an API Gateway with an integrated AWS Lambda function.
+This Terraform module sets up an REST API Gateway with an integrated AWS Lambda function.
+
+## Features
+
+- Create and configure an REST API Gateway with an integrated AWS Lambda function.
+- Configure resource, method, stage, api key, and usage plan.
+- Grant necessary permissions to access other AWS resources. (e.g., AWS Lambda).
 
 ## Usage
+
+1. Ensure you have valid AWS credentials set up for Terraform.
+
+2. apigw.tf has the following code:
 
 ```hcl
 module "apigw_lambda" {
