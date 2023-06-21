@@ -19,14 +19,14 @@ module "apigw_lambda" {
 
 ## Input
 
-- **source**:
-- **aws_region**:
+- **source**: (Required) Path to Module
+- **aws_region**: (Optional) AWS Region of the API Gateway.
 - **apigw_name**: (Required) The name for the API Gateway.
 - **stage_name**: (Optional) The stage name of the API Gateway stage. Default value is "dev".
 - **resource_name**: The resource name set inside the API.
 - **method_name**: The method name set inside the API.
 - **api_key**: API Key name
-- **usage_plan**: U
+- **usage_plan**: Usage Plan
 
 ## Output
 
