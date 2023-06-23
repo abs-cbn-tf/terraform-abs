@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 module "autoscaling" {
   source                  = "./modules/autoscaling"
   vpc_id                  = var.vpc_id
@@ -13,12 +9,16 @@ module "autoscaling" {
   desired_capacity        = var.desired_capacity
   scale_out_cpu_threshold = 70
   scale_in_cpu_threshold  = 30
-#  tags = {
-#    Environment = "production"
-#    Project     = "my-project"
-#  }
+  #  tags = {
+  #    Environment = "production"
+  #    Project     = "my-project"
+  #  }
   start_recurrence = "0 9 * * MON-FRI"
   stop_recurrence  = "0 18 * * MON-FRI"
-#  availability_zones = var.availability_zones
+  #  availability_zones = var.availability_zones
+}
+
+module "app-autoscaling" {
+  source = "./modules/app-autoscaling"
 }
 

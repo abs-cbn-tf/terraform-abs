@@ -28,17 +28,22 @@ variable "target_group_port" {
   type        = number
 }
 
-variable "listener_rules" {
-  description = "List of listener rules for the ALB"
-  type        = list(object({
-    priority  = number
-    condition = map(string)
-    action    = map(string)
-  }))
-}
+# variable "listener_rules" {
+#   description = "List of listener rules for the ALB"
+#   type = list(object({
+#     priority  = number
+#     condition = map(string)
+#     action    = map(string)
+#   }))
+# }
 
 variable "vpc_id" {
   description = "ID of the VPC where the ALB will be deployed"
   type        = string
 }
+
+# variable "listener_cert_arn" {
+#   description = "exsisting listener certificate"
+#   type        = string
+# }
 

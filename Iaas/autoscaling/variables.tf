@@ -1,22 +1,27 @@
+variable "aws_region" {
+  description = "aws region"
+  default     = "ap-southeast-1"
+}
+
 variable "vpc_id" {
   description = "ID of the VPC"
-  default = "vpc-5a35d53e"
+  default     = "vpc-5a35d53e"
 }
 
 variable "subnet_ids" {
   description = "List of subnet IDs"
   type        = list(string)
-  default = ["subnet-5999ae2e", "subnet-c21d549b"]
+  default     = ["subnet-5999ae2e", "subnet-c21d549b"]
 }
 
 variable "ami_id" {
   description = "ID of the AMI"
-  default = "ami-04a0ae173da5807d3"
+  default     = "ami-04a0ae173da5807d3"
 }
 
 variable "instance_type" {
   description = "Instance type for the autoscaling group"
-  default = "t2.micro"
+  default     = "t2.micro"
 }
 
 variable "min_size" {

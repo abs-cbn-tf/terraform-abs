@@ -84,3 +84,14 @@ variable "service_role_name" {
   description = "Container Definitions"
   type        = string
 }
+
+#cluster variables
+variable "tf_my_cluster" {
+  description = "name for cluster"
+  type        = string
+}
+
+variable "public_subnets" {
+  description = "Public subnets"
+  type        = list(string)
+}

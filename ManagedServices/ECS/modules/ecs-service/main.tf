@@ -71,12 +71,19 @@ resource "aws_iam_role_policy_attachment" "attach2" {
 }
 
 
-# ECS Service
+
 data "terraform_remote_state" "ecs_cluster_module" {
   backend = "local"
 
   config = {
     path = "/Users/ronelmigsjordaperez/Documents/terraform-abs/ManagedServices/ECS/terraform.tfstate"
+  }
+}
+data "terraform_remote_state" "alb-outputs" {
+  backend = "local"
+
+  config = {
+    path = "/Users/ronelmigsjordaperez/Documents/terraform-abs/Iaas/alb/terraform.tfstate"
   }
 }
 
@@ -87,60 +94,29 @@ data "terraform_remote_state" "ecs_cluster_module" {
 #   custom_suffix    = true
 # }
 
+# ECS Service
 resource "aws_ecs_service" "ecs_service" {
   name                              = var.service_name
-  cluster                           = data.terraform_remote_state.ecs_cluster_module.outputs.cluster_id
+  depends_on                        = [data.terraform_remote_state.ecs_cluster_module]
+  cluster                           = data.terraform_remote_state.ecs_cluster_module.outputs.cluster_arn
   task_definition                   = aws_ecs_task_definition.taskdef.arn
-  desired_count                     = 1
+  desired_count                     = 2
   health_check_grace_period_seconds = 300
 
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent         = 200
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.alb-example.arn
+    target_group_arn = data.terraform_remote_state.alb-outputs.outputs.target_group_arn #put arn here from output
     container_name   = var.container_name
     container_port   = 3000
 
   }
 
   network_configuration {
-    subnets = [
-      "subnet-09fbd69c967ec2b13", # Sandbox existing subnets
-      "subnet-02e234f573a5e7a53"
-    ]                                           # Replace with your subnet IDs
+    subnets          = var.public_subnets       # Replace with your subnet IDs
     security_groups  = ["sg-0e028cc09f558e6c8"] # Replace with your security group IDs
     assign_public_ip = true
-  }
-}
-
-# Temporarily adding ELB for testing
-resource "aws_lb" "alb-example" {
-  name               = "test-lb-tf"
-  load_balancer_type = "application"
-  security_groups    = ["sg-0e028cc09f558e6c8"] # Sandbox existing security groups
-  subnets = [
-    "subnet-09fbd69c967ec2b13", # Sandbox existing subnets
-    "subnet-02e234f573a5e7a53"
-  ]
-}
-resource "aws_lb_target_group" "alb-example" {
-  name             = "terraform-target-group"
-  target_type      = "ip"
-  ip_address_type  = "ipv4"
-  port             = 3000
-  protocol         = "HTTP"
-  protocol_version = "HTTP1"
-  vpc_id           = "vpc-0cbd8776bdd708ee5"
-}
-
-resource "aws_lb_listener" "alb-example" {
-  load_balancer_arn = aws_lb.alb-example.arn
-  port              = 80
-  protocol          = "HTTP"
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.alb-example.arn
   }
 }
 
