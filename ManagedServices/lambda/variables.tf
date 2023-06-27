@@ -6,10 +6,13 @@ variable "aws_region" {
 }
 
 # essential variables for Lambda 
+variable "lambda_count" {
+  type    = number
+  default = 2
+}
 variable "function_name" {
-  description = "Variable that sets lambda name"
-  type        = string
-  default     = "terraform-lambda-function"
+  type    = list(string)
+  default = ["imp-page-api", "imp-content-api"]
 }
 
 variable "runtime" {
@@ -26,8 +29,8 @@ variable "handler" {
 
 variable "iam_role_name" {
   description = "Role name for the lambda"
-  type        = string
-  default     = "iam-role-for-terraform-lambda"
+  type        = list(string)
+  default     = ["imp-page-api-role", "imp-content-api-role"]
 }
 
 variable "memory" {
@@ -61,6 +64,6 @@ variable "my_lambda_tags" {
   type        = map(string)
   default = {
     App         = "IMP"
-    Environment = "Sandbox"
+    Environment = "UAT"
   }
 }
