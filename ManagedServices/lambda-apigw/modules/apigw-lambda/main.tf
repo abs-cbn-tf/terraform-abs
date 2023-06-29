@@ -1,14 +1,5 @@
-# Fetches the tfstate locally
-data "terraform_remote_state" "lambda_module" {
-  backend = "local"
-
-  config = {
-    path = "/Users/ronelmigsjordaperez/Documents/terraform-abs/ManagedServices/lambda/terraform.tfstate"
-  }
-}
-
-# output "apigw_lambda_arn" {
-#   value = data.terraform_remote_state.lambda_module.outputs.lambda_arn
+# module "lambda" {
+#   source = "../../../lambda"
 # }
 
 # Uses the default aws account details 
@@ -17,6 +8,9 @@ data "aws_caller_identity" "current" {}
 resource "aws_api_gateway_rest_api" "my_rest_api" {
   name        = var.apigw_name
   description = "My API Gateway REST API"
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
 }
 
 # Create a resource within the REST API
@@ -41,7 +35,7 @@ resource "aws_api_gateway_integration" "my_integration" {
   http_method             = aws_api_gateway_method.my_method.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = data.terraform_remote_state.lambda_module.outputs.invoke_arn
+  uri                     = var.lambda_invoke_arn
 }
 
 # Deploy the API
@@ -81,7 +75,7 @@ resource "aws_api_gateway_stage" "example" {
 resource "aws_lambda_permission" "lambda_permission" {
   statement_id  = "AllowMyDemoAPIInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = data.terraform_remote_state.lambda_module.outputs.lambda_name
+  function_name = var.lambda_function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "arn:aws:execute-api:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.my_rest_api.id}/*/*/*"
 

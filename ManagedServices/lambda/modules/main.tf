@@ -36,13 +36,9 @@ resource "aws_lambda_function" "test_lambda" {
   runtime = var.runtime
 
   environment {
-    variables = {
-      test_var  = var.value1
-      test_var1 = var.value2
-      test_var2 = var.value3
-    }
+    variables = var.env_var
   }
-  # add tags tomorrow
+
   tags = var.tags
 }
 

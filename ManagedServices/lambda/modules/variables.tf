@@ -29,17 +29,10 @@ variable "memory" {
   type        = string
 }
 
-variable "value1" {
-  description = "value for var1"
-  type        = string
-}
-variable "value2" {
-  description = "value for var2"
-  type        = string
-}
-variable "value3" {
-  description = "value for var3"
-  type        = string
+variable "env_var" {
+  description = "Environment variables for lambda"
+  type        = map(string)
+  default     = {}
 }
 
 variable "tags" {

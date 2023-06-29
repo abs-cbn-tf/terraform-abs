@@ -5,14 +5,16 @@ variable "aws_region" {
   default     = "ap-southeast-1"
 }
 
-# essential variables for Lambda 
-variable "lambda_count" {
-  type    = number
-  default = 2
+variable "aws_profile" {
+  description = "AWS CLI profile to be used by terraform"
+  type        = string
+  default     = "naren"
 }
+
+# essential variables for Lambda 
 variable "function_name" {
-  type    = list(string)
-  default = ["imp-page-api", "imp-content-api"]
+  type    = string
+  default = "imp-page-api"
 }
 
 variable "runtime" {
@@ -29,8 +31,8 @@ variable "handler" {
 
 variable "iam_role_name" {
   description = "Role name for the lambda"
-  type        = list(string)
-  default     = ["imp-page-api-role", "imp-content-api-role"]
+  type        = string
+  default     = "imp-content-api-role"
 }
 
 variable "memory" {
@@ -39,23 +41,16 @@ variable "memory" {
   default     = "129"
 }
 
-#environment variables
-variable "value1" {
-  description = "value for var1"
-  type        = string
-  default     = "value1"
-}
+## environment variables
 
-variable "value2" {
-  description = "value for var2"
-  type        = string
-  default     = "value2"
-}
+variable "env_var" {
+  description = "Tags to set on the lambda"
+  type        = map(string)
+  default = {
+    var1 = "val1"
+    var2 = "val2"
+  }
 
-variable "value3" {
-  description = "value for var3"
-  type        = string
-  default     = "value3"
 }
 
 ## Create Variable for Lambda Function Tags
@@ -63,7 +58,8 @@ variable "my_lambda_tags" {
   description = "Tags to set on the lambda"
   type        = map(string)
   default = {
-    App         = "IMP"
-    Environment = "UAT"
+    Application = "Push"
+    Environment = "Demo"
   }
+
 }
