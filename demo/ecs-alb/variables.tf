@@ -1,3 +1,9 @@
+variable "aws_region" {
+  description = "Region in which AWS Resources to be created"
+  type        = string
+  default     = "ap-southeast-1"
+}
+# ecs service variables
 # Variables for the task definition
 variable "task_family" {
   description = "Family for task (name)"
@@ -91,16 +97,49 @@ variable "tf_my_cluster" {
   type        = string
 }
 
+variable "tf_capacity_provider" {
+  description = "Type of provider (fagate or fargate spot)"
+  type        = string
+}
+
 variable "public_subnets" {
   description = "Public subnets"
   type        = list(string)
 }
 
-variable "alb_tg_arn" {
-  description = "target group arn from alb"
+# variables for alb tg
+variable "alb_name" {
+  description = "Name of the Application Load Balancer"
   type        = string
 }
 
-variable "cluster_arn" {
-  type = string
+variable "subnets" {
+  description = "List of subnets where the ALB will be deployed"
+  type        = list(string)
 }
+
+variable "security_groups" {
+  description = "List of security groups associated with the ALB"
+  type        = list(string)
+}
+
+variable "listener_port" {
+  description = "Port for the ALB listener"
+  type        = number
+}
+
+variable "target_group_name" {
+  description = "Name of the target group"
+  type        = string
+}
+
+variable "target_group_port" {
+  description = "Port for the target group"
+  type        = number
+}
+
+variable "vpc_id" {
+  description = "ID of the VPC where the ALB will be deployed"
+  type        = string
+}
+

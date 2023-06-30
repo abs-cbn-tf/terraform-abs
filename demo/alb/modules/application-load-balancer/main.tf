@@ -1,96 +1,31 @@
-# modules/application-load-balancer/main.tf
-variable "vpc_id" {
-  description = "VPC ID"
-  type        = string
-  default = "vpc-3a9b1451"
-}
-
-variable "alb_name" {
-  description = "Name of the Application Load Balancer"
-  type        = string
-}
-
-variable "target_group_name" {
-  description = "Name of the target group"
-  type        = string
-}
-
-variable "listener_port" {
-  description = "Port for the ALB listener"
-  type        = number
-}
-
-variable "listener_protocol" {
-  description = "Protocol for the ALB listener"
-  type        = string
-}
-
-variable "container_name" {
-  description = "Name of the container to attach to the target group"
-  type        = string
-}
-
-variable "container_port" {
-  description = "Port of the container to attach to the target group"
-  type        = number
-}
-
-variable "alb_security_group_id" {
-  description = "Security group ID for the ALB"
-  type        = string
-}
-
-#variable "alb_subnet_id" {
-#  description = "Subnet ID for the ALB"
-#  type        = string
-#}
-
-variable "alb_subnet_id" {
-  description = "List of subnet IDs for the Application Load Balancer"
-  type        = list(string)
-   default     = ["subnet-6d75c206", "subnet-273c686b"]
-}
-
-resource "aws_lb" "application_load_balancer" {
+resource "aws_lb" "alb-example" {
   name               = var.alb_name
-  internal           = false
   load_balancer_type = "application"
-  security_groups    = [var.alb_security_group_id]
-
- # subnet_mapping {
-    subnets = var.alb_subnet_id
-    #subnet_id = split(",", var.alb_subnet_id)
- # }
+  security_groups    = var.security_groups # Sandbox existing security groups
+  subnets            = var.subnets
+}
+resource "aws_lb_target_group" "alb-example" {
+  name             = var.target_group_name
+  target_type      = "ip"
+  ip_address_type  = "ipv4"
+  port             = var.target_group_port
+  protocol         = "HTTP"
+  protocol_version = "HTTP1"
+  vpc_id           = var.vpc_id
 }
 
-resource "aws_lb_listener" "application_listener" {
-  load_balancer_arn = aws_lb.application_load_balancer.arn
+resource "aws_lb_listener" "alb-example" {
+  load_balancer_arn = aws_lb.alb-example.arn
   port              = var.listener_port
-  protocol          = var.listener_protocol
-
+  protocol          = "HTTP"
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.application_target_group.arn
+    target_group_arn = aws_lb_target_group.alb-example.arn
   }
 }
 
-resource "aws_lb_target_group" "application_target_group" {
-  name     = var.target_group_name
-  port     = var.container_port
-  protocol = var.listener_protocol
-  vpc_id      = var.vpc_id 
-}
+# resource "aws_lb_listener_certificate" "alb-example" {
+#   listener_arn    = aws_lb_listener.alb-example.arn
+#   certificate_arn = var.listener_cert_arn # ValidationError: A certificate cannot be specified for HTTP listeners
+# }
 
-#resource "aws_lb_target_group_attachment" "application_target_group_attachment" {
-#  target_group_arn = aws_lb_target_group.application_target_group.arn
-#  target_id        = var.container_name
-#  port             = var.container_port
-#}
-output "alb_arn" {
-  value = aws_lb.application_load_balancer.arn
-}
-
-
-output "target_group_arn" {
-  value = aws_lb_target_group.application_target_group.arn
-}

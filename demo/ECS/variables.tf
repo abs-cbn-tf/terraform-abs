@@ -48,12 +48,6 @@ variable "network_mode" {
   default     = "awsvpc"
 }
 
-
-variable "push_web_target_group_arn" {
-  description = "ARN of the target group"
-  type        = string
-}
-
 # variable "container_definitions" {
 #   description = "Container Definitions"
 #   type        = string
@@ -135,7 +129,7 @@ variable "cpu_architecture" {
 variable "service_name" {
   description = "Container Definitions"
   type        = string
-  default     = "entertainment-web-ecs-service"
+  default     = "terraform-service"
 }
 
 variable "service_role_name" {
@@ -148,8 +142,12 @@ variable "public_subnets" {
   description = "Public subnets"
   type        = list(string)
   default = [
-    "subnet-6d75c206", # Sandbox existing subnets
-    "subnet-273c686b"
+    "subnet-09fbd69c967ec2b13", # Sandbox existing subnets
+    "subnet-02e234f573a5e7a53"
   ]
 }
 
+# variable "alb_tg_arn" {
+#   description = "target group arn from alb"
+#   type        = string
+# }

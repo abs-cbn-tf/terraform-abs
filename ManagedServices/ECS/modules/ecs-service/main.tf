@@ -70,35 +70,11 @@ resource "aws_iam_role_policy_attachment" "attach2" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-
-
-data "terraform_remote_state" "ecs_cluster_module" {
-  backend = "local"
-
-  config = {
-    path = "/Users/ronelmigsjordaperez/Documents/terraform-abs/ManagedServices/ECS/terraform.tfstate"
-  }
-}
-data "terraform_remote_state" "alb-outputs" {
-  backend = "local"
-
-  config = {
-    path = "/Users/ronelmigsjordaperez/Documents/terraform-abs/Iaas/alb/terraform.tfstate"
-  }
-}
-
-# # Provides an IAM service-linked role
-# # IMPORTANT!!
-# resource "aws_iam_service_linked_role" "elasticcontainerservice" {
-#   aws_service_name = "ecs.amazonaws.com"
-#   custom_suffix    = true
-# }
-
 # ECS Service
 resource "aws_ecs_service" "ecs_service" {
   name                              = var.service_name
-  depends_on                        = [data.terraform_remote_state.ecs_cluster_module]
-  cluster                           = data.terraform_remote_state.ecs_cluster_module.outputs.cluster_arn
+  depends_on                        = [var.cluster_arn]
+  cluster                           = var.cluster_arn
   task_definition                   = aws_ecs_task_definition.taskdef.arn
   desired_count                     = 2
   health_check_grace_period_seconds = 300
@@ -107,7 +83,7 @@ resource "aws_ecs_service" "ecs_service" {
   deployment_maximum_percent         = 200
 
   load_balancer {
-    target_group_arn = data.terraform_remote_state.alb-outputs.outputs.target_group_arn #put arn here from output
+    target_group_arn = var.tg_arn #put arn here from output
     container_name   = var.container_name
     container_port   = 3000
 
@@ -120,4 +96,98 @@ resource "aws_ecs_service" "ecs_service" {
   }
 }
 
+# app auto-scaling
+
+
+#------------------------------------------------------------------------------
+# AWS Auto Scaling - CloudWatch Alarm CPU High
+#------------------------------------------------------------------------------
+resource "aws_cloudwatch_metric_alarm" "cpu_high" {
+  alarm_name          = "${var.service_name}-cpu-high"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = 120
+  statistic           = "Maximum"
+  threshold           = 70
+  dimensions = {
+    ClusterName = var.cluster_arn
+    ServiceName = var.service_name
+  }
+  alarm_actions = [aws_appautoscaling_policy.scale_up_policy.arn]
+
+  # tags = var.tags
+}
+
+#------------------------------------------------------------------------------
+# AWS Auto Scaling - CloudWatch Alarm CPU Low
+#------------------------------------------------------------------------------
+resource "aws_cloudwatch_metric_alarm" "cpu_low" {
+  alarm_name          = "${var.service_name}-cpu-low"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = 120
+  statistic           = "Average"
+  threshold           = 30
+  dimensions = {
+    ClusterName = var.cluster_arn
+    ServiceName = var.service_name
+  }
+  alarm_actions = [aws_appautoscaling_policy.scale_down_policy.arn]
+
+  # tags = var.tags
+}
+
+#------------------------------------------------------------------------------
+# AWS Auto Scaling - Scaling Up Policy
+#------------------------------------------------------------------------------
+resource "aws_appautoscaling_policy" "scale_up_policy" {
+
+  name               = "${var.service_name}-scale-up-policy"
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.cluster_arn}/${var.service_name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 300
+    metric_aggregation_type = "Maximum"
+    step_adjustment {
+      metric_interval_lower_bound = 0
+      scaling_adjustment          = 1
+    }
+  }
+}
+
+#------------------------------------------------------------------------------
+# AWS Auto Scaling - Scaling Down Policy
+#------------------------------------------------------------------------------
+resource "aws_appautoscaling_policy" "scale_down_policy" {
+  name               = "${var.service_name}-scale-down-policy"
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.cluster_arn}/${var.service_name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 300
+    metric_aggregation_type = "Maximum"
+    step_adjustment {
+      metric_interval_upper_bound = 0
+      scaling_adjustment          = -1
+    }
+  }
+}
+
+#------------------------------------------------------------------------------
+# AWS Auto Scaling - Scaling Target
+#------------------------------------------------------------------------------
+resource "aws_appautoscaling_target" "scale_target" {
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.cluster_arn}/${var.service_name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  min_capacity       = 1
+  max_capacity       = 2
+}
 

@@ -1,11 +1,22 @@
+module "alb" {
+  source            = "../alb/modules/application-load-balancer"
+  alb_name          = var.alb_name
+  subnets           = var.subnets
+  security_groups   = var.security_groups
+  listener_port     = var.listener_port
+  target_group_name = var.target_group_name
+  target_group_port = var.target_group_port
+  vpc_id            = var.vpc_id
+}
+
 module "ecs-cluster" {
-  source               = "./modules/ecs-cluster"
+  source               = "../ECS/modules/ecs-cluster"
   tf_capacity_provider = var.tf_capacity_provider
   tf_my_cluster        = var.tf_my_cluster
 }
 
 module "ecs-service" {
-  source = "./modules/ecs-service"
+  source = "../ECS/modules/ecs-service"
   # taskdef
   task_family    = var.task_family
   task_role_name = var.task_role_name
@@ -32,7 +43,6 @@ module "ecs-service" {
   # network
   public_subnets = var.public_subnets
 
-  # cluster_arn = module.ecs-cluster.cluster_arn
-
-  # alb_tg_arn = var.alb_tg_arn
+  cluster_arn = module.ecs-cluster.cluster_arn
+  alb_tg_arn  = module.alb.target_group_arn
 }

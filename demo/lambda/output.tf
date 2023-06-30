@@ -1,18 +1,15 @@
-# Output definitions
-
-output "lambda_arn" {
+output "arn" {
   description = "ARN of the lambda function"
-  value       = [for i in module.lambda_function : i.arn]
+  value       = aws_lambda_function.test_lambda.arn
 }
 
 output "invoke_arn" {
   description = "ARN of the lambda function"
-  value       = [for i in module.lambda_function : i.invoke_arn]
+  value       = aws_lambda_function.test_lambda.invoke_arn
 }
 
-output "lambda_name" {
+
+output "name" {
   description = "Name of the lambda function"
-  value       = [for i in module.lambda_function : i.name]
+  value       = aws_lambda_function.test_lambda.id
 }
-
-

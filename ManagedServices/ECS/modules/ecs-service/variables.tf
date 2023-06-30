@@ -95,3 +95,11 @@ variable "public_subnets" {
   description = "Public subnets"
   type        = list(string)
 }
+
+variable "tg_arn" {
+  type = string
+}
+
+variable "cluster_arn" {
+  type = string
+}

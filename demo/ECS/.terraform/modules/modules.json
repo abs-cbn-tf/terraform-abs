@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"ecs-cluster","Source":"./modules/ecs-cluster","Dir":"modules/ecs-cluster"},{"Key":"ecs-service","Source":"./modules/ecs-service","Dir":"modules/ecs-service"},{"Key":"","Source":"","Dir":"."}]}

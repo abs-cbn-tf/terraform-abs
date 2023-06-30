@@ -1,3 +1,7 @@
+module "alb-tg" {
+  source = "../../Iaas/alb"
+}
+
 module "ecs-cluster" {
   source               = "./modules/ecs-cluster"
   tf_capacity_provider = var.tf_capacity_provider
@@ -32,4 +36,7 @@ module "ecs-service" {
   # network
   public_subnets = var.public_subnets
 
+  tg_arn = module.alb-tg.target_group_arn
+
+  cluster_arn = module.ecs-cluster.cluster_arn
 }

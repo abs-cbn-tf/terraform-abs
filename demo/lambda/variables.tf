@@ -1,69 +1,42 @@
 # Input Variables
 variable "aws_region" {
-  description = "Region in which AWS Resources to be created"
+  description = "aws region"
   type        = string
-  default     = "ap-southeast-1"
 }
 
-# essential variables for Lambda 
-variable "lambda_count" {
-  type    = number
-  default = 2
-}
 variable "function_name" {
-  type    = list(string)
-  default = ["imp-page-api", "imp-content-api"]
+  description = "aws region"
+  type        = string
 }
 
 variable "runtime" {
-  description = "Runtime version"
+  description = "runtime"
   type        = string
-  default     = "nodejs16.x"
 }
 
 variable "handler" {
-  description = "Lambda function handler"
+  description = "handler"
   type        = string
-  default     = "index.handler"
 }
 
 variable "iam_role_name" {
-  description = "Role name for the lambda"
-  type        = list(string)
-  default     = ["imp-page-api-role", "imp-content-api-role"]
+  description = "role name"
+  type        = string
 }
 
 variable "memory" {
-  description = "Memory size for the lambda"
+  description = "memory size"
   type        = string
-  default     = "129"
 }
 
-#environment variables
-variable "value1" {
-  description = "value for var1"
-  type        = string
-  default     = "value1"
+variable "env_var" {
+  description = "Environment variables for lambda"
+  type        = map(string)
+  default     = {}
 }
 
-variable "value2" {
-  description = "value for var2"
-  type        = string
-  default     = "value2"
-}
-
-variable "value3" {
-  description = "value for var3"
-  type        = string
-  default     = "value3"
-}
-
-## Create Variable for Lambda Function Tags
 variable "my_lambda_tags" {
   description = "Tags to set on the lambda"
   type        = map(string)
-  default = {
-    App         = "IMP"
-    Environment = "UAT"
-  }
+  default     = {}
 }

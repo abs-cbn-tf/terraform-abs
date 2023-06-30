@@ -20,5 +20,13 @@ module "autoscaling" {
 
 module "app-autoscaling" {
   source = "./modules/app-autoscaling"
+
+  cluster_name = module.ecs-alb.cluster_arn
+  service_name = module.ecs-alb.service_name
+
+}
+
+module "ecs-alb" {
+  source = "../../ManagedServices/ECS"
 }
 
