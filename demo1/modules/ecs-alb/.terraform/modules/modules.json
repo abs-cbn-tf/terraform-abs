@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"alb","Source":"../alb/modules/application-load-balancer","Dir":"../alb/modules/application-load-balancer"},{"Key":"ecs-cluster","Source":"../ECS/modules/ecs-cluster","Dir":"../ECS/modules/ecs-cluster"},{"Key":"ecs-service","Source":"../ECS/modules/ecs-service","Dir":"../ECS/modules/ecs-service"},{"Key":"","Source":"","Dir":"."}]}
