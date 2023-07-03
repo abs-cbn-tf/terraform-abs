@@ -23,9 +23,10 @@ variable "my_lambda_tags" {
 }
 
 # ALB VARIABLES
-variable "vpc_id" {}
-variable "subnets" {}
-variable "security_groups" {}
+# variable "vpc_id" {}
+# variable "public_subnets" {}
+# variable "security_groups" {}
+# variable "ecs_security_groups" {}
 variable "listener_port" {}
 variable "target_group_name" {}
 variable "target_group_port" {}
@@ -60,5 +61,17 @@ variable "service_name" {}
 
 variable "service_role_name" {}
 
-variable "public_subnets" {}
+# variable "public_subnets" {}
 
+# for vpc 
+variable "project_name" {}
+variable "vpc_cidr" {}
+# variable name for public subnets
+variable "public_subnet_az1" {}
+variable "public_subnet_az2" {}
+# variable cidr for public subnets
+variable "public_subnet_az1_cidr" {}
+variable "public_subnet_az2_cidr" {}
+variable "vpc_tags" {}
+
+# for security group

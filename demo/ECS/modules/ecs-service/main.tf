@@ -90,8 +90,8 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   network_configuration {
-    subnets          = var.public_subnets       # Replace with your subnet IDs
-    security_groups  = ["sg-0e028cc09f558e6c8"] # Replace with your security group IDs
+    subnets          = var.public_subnets      # Replace with your subnet IDs
+    security_groups  = var.ecs_security_groups # Replace with your security group IDs
     assign_public_ip = true
   }
 }
@@ -187,6 +187,7 @@ resource "aws_appautoscaling_policy" "scale_down_policy" {
 # AWS Auto Scaling - Scaling Target
 #------------------------------------------------------------------------------
 resource "aws_appautoscaling_target" "scale_target" {
+  depends_on         = [aws_ecs_service.ecs_service]
   service_namespace  = "ecs"
   resource_id        = "service/${var.cluster_arn}/${var.service_name}"
   scalable_dimension = "ecs:service:DesiredCount"

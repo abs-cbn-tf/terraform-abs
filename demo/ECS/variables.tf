@@ -141,10 +141,6 @@ variable "service_role_name" {
 variable "public_subnets" {
   description = "Public subnets"
   type        = list(string)
-  default = [
-    "subnet-09fbd69c967ec2b13", # Sandbox existing subnets
-    "subnet-02e234f573a5e7a53"
-  ]
 }
 
 # variable "alb_tg_arn" {

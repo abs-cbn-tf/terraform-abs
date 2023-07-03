@@ -13,10 +13,10 @@ variable "vpc_id" {
 variable "subnets" {
   description = "subnets for alb"
   type        = list(string)
-  default = [
-    "subnet-09fbd69c967ec2b13", # Sandbox existing subnets
-    "subnet-02e234f573a5e7a53"
-  ]
+  # default = [
+  #   "subnet-09fbd69c967ec2b13", # Sandbox existing subnets
+  #   "subnet-02e234f573a5e7a53"
+  # ]
 }
 
 variable "security_groups" {

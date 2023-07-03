@@ -22,9 +22,9 @@ my_lambda_tags = {
   Environment = "Demo"
 }
 # ALB VARIABLES
-vpc_id          = "vpc-0cbd8776bdd708ee5"
-subnets         = ["subnet-09fbd69c967ec2b13", "subnet-02e234f573a5e7a53"]
-security_groups = ["sg-0e028cc09f558e6c8"]
+# vpc_id          = "vpc-0c9d173ca36c1610b"
+# subnets         = ["subnet-038237e2c544512b2", "subnet-06444596eafdc15d2"]
+# security_groups = ["sg-00e85456726ee4964"]
 
 listener_port     = 80
 target_group_name = "imp-alb-tg"
@@ -59,5 +59,21 @@ cpu_architecture         = "X86_64"
 # Variables for the service
 service_name      = "IMP-Service"
 service_role_name = "IMP-service-role"
-public_subnets    = ["subnet-09fbd69c967ec2b13", "subnet-02e234f573a5e7a53"]
+# public_subnets      = ["subnet-038237e2c544512b2", "subnet-06444596eafdc15d2"]
+# ecs_security_groups = ["sg-0991ab42e756b2450"]
 
+# Variables for the VPC
+project_name           = "IMP"
+vpc_cidr               = "10.193.176.0/21"
+public_subnet_az1_cidr = "10.193.176.0/25"
+public_subnet_az1      = "Public-Subnet-A-IMP"
+public_subnet_az2_cidr = "10.193.176.128/25"
+public_subnet_az2      = "Public-Subnet-B-IMP"
+
+vpc_tags = {
+  Name    = "imp-vpc"
+  Env     = "demo"
+  project = "imp"
+  #  foo = "bar"
+}
+# Variables for Security group

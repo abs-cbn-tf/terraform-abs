@@ -26,13 +26,14 @@ module "apigw-lambda" {
 module "ecs-alb" {
   source = "./ecs-alb"
   # alb
-  alb_name          = var.alb_name
-  subnets           = var.subnets
-  security_groups   = var.security_groups
-  listener_port     = var.listener_port
-  target_group_name = var.target_group_name
-  target_group_port = var.target_group_port
-  vpc_id            = var.vpc_id
+  vpc_id              = module.vpc.vpc_id_output
+  alb_name            = var.alb_name
+  public_subnets      = [module.vpc.public_subnet_az1_id, module.vpc.public_subnet_az2_id]
+  security_groups     = [module.push-web-sg.security_group_id]
+  ecs_security_groups = [module.push-web-ecs-service-sg.security_group_id]
+  listener_port       = var.listener_port
+  target_group_name   = var.target_group_name
+  target_group_port   = var.target_group_port
 
   # cluster
   tf_capacity_provider = var.tf_capacity_provider
@@ -59,9 +60,102 @@ module "ecs-alb" {
   cpu_architecture         = var.cpu_architecture
 
   # service 
-  service_name      = var.service_name
-  service_role_name = var.service_role_name
+  service_name           = var.service_name
+  service_role_name      = var.service_role_name
+  project_name           = var.project_name
+  vpc_cidr               = var.vpc_cidr
+  public_subnet_az1_cidr = var.public_subnet_az1_cidr
+  public_subnet_az1      = var.public_subnet_az1
+  public_subnet_az2_cidr = var.public_subnet_az2_cidr
+  public_subnet_az2      = var.public_subnet_az2
+  vpc_tags               = var.vpc_tags
+}
 
-  # network
-  public_subnets = var.public_subnets
+#for vpc
+module "vpc" {
+  source                 = "./vpc/modules"
+  aws_region             = var.aws_region
+  project_name           = var.project_name
+  vpc_cidr               = var.vpc_cidr
+  public_subnet_az1_cidr = var.public_subnet_az1_cidr
+  public_subnet_az1      = var.public_subnet_az1
+  public_subnet_az2_cidr = var.public_subnet_az2_cidr
+  public_subnet_az2      = var.public_subnet_az2
+  vpc_tags               = var.vpc_tags
+}
+
+# for security group
+module "push-web-ecs-service-sg" {
+  source      = "./sg/modules/security_group"
+  description = "push-web-ecs-service-sg"
+
+  ingress_rules = [
+    {
+      from_port   = 3000
+      to_port     = 3000
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+      self        = false
+    }
+  ]
+
+  egress_rules = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+      self        = false
+    }
+  ]
+
+  name = "push-web-ecs-service-sg"
+  tags = {
+    Backup               = "False"
+    OwnerTeamEmail       = "mardelacruz@abs-cbn.com"
+    "abscbn-bus-unit"    = "DCT"
+    "abscbn-cost-centre" = "61250"
+    "abscbn-criticality" = "Silver"
+    "abscbn-env"         = "UAT"
+    "abscbn-product"     = "ent"
+    "abscbn-url"         = "pushweb.abs-cbn.com"
+  }
+  vpc_id = module.vpc.vpc_id_output
+}
+module "push-web-sg" {
+  source      = "./sg/modules/security_group"
+  description = "push-web-sg"
+
+  ingress_rules = [
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+      self        = false
+    }
+  ]
+
+  egress_rules = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+      self        = false
+    }
+  ]
+
+  name = "push-web-sg"
+  tags = {
+    Backup               = "False"
+    OwnerTeamEmail       = "mardelacruz@abs-cbn.com"
+    "abscbn-bus-unit"    = "DCT"
+    "abscbn-cost-centre" = "61250"
+    "abscbn-criticality" = "Silver"
+    "abscbn-env"         = "UAT"
+    "abscbn-product"     = "ent"
+    "abscbn-url"         = "pushweb.abs-cbn.com"
+  }
+  vpc_id = module.vpc.vpc_id_output
 }

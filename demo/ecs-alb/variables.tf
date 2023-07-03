@@ -113,16 +113,19 @@ variable "alb_name" {
   type        = string
 }
 
-variable "subnets" {
-  description = "List of subnets where the ALB will be deployed"
-  type        = list(string)
-}
+# variable "subnets" {
+#   description = "List of subnets where the ALB will be deployed"
+#   type        = list(string)
+# }
 
 variable "security_groups" {
   description = "List of security groups associated with the ALB"
   type        = list(string)
 }
-
+variable "ecs_security_groups" {
+  description = "List of security groups associated with the ALB"
+  type        = list(string)
+}
 variable "listener_port" {
   description = "Port for the ALB listener"
   type        = number
@@ -138,8 +141,57 @@ variable "target_group_port" {
   type        = number
 }
 
-variable "vpc_id" {
-  description = "ID of the VPC where the ALB will be deployed"
-  type        = string
+# variable "vpc_id" {
+#   description = "ID of the VPC where the ALB will be deployed"
+#   type        = string
+# }
+
+# for vpc 
+variable "project_name" {}
+variable "vpc_cidr" {}
+# variable name for public subnets
+variable "public_subnet_az1" {}
+variable "public_subnet_az2" {}
+# variable cidr for public subnets
+variable "public_subnet_az1_cidr" {}
+variable "public_subnet_az2_cidr" {}
+variable "vpc_tags" {}
+# for security group
+variable "description" {
+  type    = string
+  default = "Default description"
 }
 
+variable "ingress_rules" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+    self        = bool
+  }))
+  default = []
+}
+
+variable "egress_rules" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+    self        = bool
+  }))
+  default = []
+}
+
+variable "name" {
+  type    = string
+  default = "default"
+}
+
+variable "tags" {
+  type    = map(string)
+  default = {}
+}
+
+variable "vpc_id" {}

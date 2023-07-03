@@ -96,6 +96,11 @@ variable "public_subnets" {
   type        = list(string)
 }
 
+variable "ecs_security_groups" {
+  description = "security groups"
+  type        = list(string)
+}
+
 variable "alb_tg_arn" {
   description = "target group arn from alb"
   type        = string

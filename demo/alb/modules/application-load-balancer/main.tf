@@ -2,7 +2,7 @@ resource "aws_lb" "alb-example" {
   name               = var.alb_name
   load_balancer_type = "application"
   security_groups    = var.security_groups # Sandbox existing security groups
-  subnets            = var.subnets
+  subnets            = var.public_subnets
 }
 resource "aws_lb_target_group" "alb-example" {
   name             = var.target_group_name
