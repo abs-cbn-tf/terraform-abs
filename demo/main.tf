@@ -24,7 +24,8 @@ module "apigw-lambda" {
 }
 
 module "ecs-alb" {
-  source = "./ecs-alb"
+  depends_on = [module.vpc, module.push-web-ecs-service-sg, module.push-web-sg]
+  source     = "./ecs-alb"
   # alb
   vpc_id              = module.vpc.vpc_id_output
   alb_name            = var.alb_name
@@ -86,6 +87,7 @@ module "vpc" {
 
 # for security group
 module "push-web-ecs-service-sg" {
+  depends_on  = [module.vpc]
   source      = "./sg/modules/security_group"
   description = "push-web-ecs-service-sg"
 
@@ -123,6 +125,7 @@ module "push-web-ecs-service-sg" {
   vpc_id = module.vpc.vpc_id_output
 }
 module "push-web-sg" {
+  depends_on  = [module.vpc]
   source      = "./sg/modules/security_group"
   description = "push-web-sg"
 
