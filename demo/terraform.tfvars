@@ -28,7 +28,7 @@ my_lambda_tags = {
 
 listener_port     = 80
 target_group_name = "imp-alb-tg"
-target_group_port = 3000
+target_group_port = 80
 # listener_cert_arn
 alb_name = "imp-alb"
 
@@ -45,11 +45,11 @@ network_mode   = "awsvpc"
 
 # Container Definition Variables
 container_name     = "my-container"
-container_image    = "892339339186.dkr.ecr.ap-southeast-1.amazonaws.com/test-app"
+container_image    = "nginx:latest"
 container_cpu      = 256
 container_memory   = 512
-container_cport    = 3000
-container_hport    = 3000
+container_cport    = 80
+container_hport    = 80
 container_protocol = "tcp"
 # EOF Container Definitions Variables
 requires_compatibilities = "FARGATE"
