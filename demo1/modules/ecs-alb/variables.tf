@@ -90,6 +90,7 @@ variable "service_role_name" {
   description = "Container Definitions"
   type        = string
 }
+variable "ecs_lb_cport" {}
 
 #cluster variables
 variable "tf_my_cluster" {
@@ -100,11 +101,6 @@ variable "tf_my_cluster" {
 variable "tf_capacity_provider" {
   description = "Type of provider (fagate or fargate spot)"
   type        = string
-}
-
-variable "public_subnets" {
-  description = "Public subnets"
-  type        = list(string)
 }
 
 # variables for alb tg
@@ -123,6 +119,10 @@ variable "security_groups" {
   type        = list(string)
 }
 
+variable "ecs_security_groups" {
+  description = "List of security groups associated with the ALB"
+  type        = list(string)
+}
 variable "listener_port" {
   description = "Port for the ALB listener"
   type        = number

@@ -85,13 +85,13 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = var.alb_tg_arn #put arn here from output
     container_name   = var.container_name
-    container_port   = 3000
+    container_port   = var.ecs_lb_cport
 
   }
 
   network_configuration {
-    subnets          = var.public_subnets       # Replace with your subnet IDs
-    security_groups  = var.security_groups # Replace with your security group IDs
+    subnets          = var.subnets             # Replace with your subnet IDs
+    security_groups  = var.ecs_security_groups # Replace with your security group IDs
     assign_public_ip = true
   }
 }

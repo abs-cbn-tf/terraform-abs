@@ -5,9 +5,9 @@ module "apigw-lambda" {
   function_name = var.function_name
 
   # variables for lambda
-  iam_role_name  = var.iam_role_name
-  runtime        = var.runtime
-  handler        = var.handler
+  iam_role_name = var.iam_role_name
+  runtime       = var.runtime
+  handler       = var.handler
 
   memory         = var.memory
   env_var        = var.env_var
@@ -25,15 +25,17 @@ module "apigw-lambda" {
 }
 
 module "ecs-alb" {
-  source = "./modules/ecs-alb"
+  depends_on = [module.vpc, module.push-web-sg, module.push-web-ecs-service-sg]
+  source     = "./modules/ecs-alb"
   # alb
-  alb_name          = var.alb_name
-  subnets           = [module.vpc.public_subnet_az1_id, module.vpc.public_subnet_az2_id]
-  security_groups   = [module.sg.security_group_id]
-  listener_port     = var.listener_port
-  target_group_name = var.target_group_name
-  target_group_port = var.target_group_port
-  vpc_id            = module.vpc.vpc_id
+  alb_name            = var.alb_name
+  subnets             = [module.vpc.public_subnet_az1_id, module.vpc.public_subnet_az2_id]
+  security_groups     = [module.push-web-ecs-service-sg.security_group_id]
+  ecs_security_groups = [module.push-web-sg.security_group_id]
+  listener_port       = var.listener_port
+  target_group_name   = var.target_group_name
+  target_group_port   = var.target_group_port
+  vpc_id              = module.vpc.vpc_id
 
   # cluster
   tf_capacity_provider = var.tf_capacity_provider
@@ -62,32 +64,110 @@ module "ecs-alb" {
   # service 
   service_name      = var.service_name
   service_role_name = var.service_role_name
+  ecs_lb_cport      = var.ecs_lb_cport
 
-  # network
-  public_subnets = [module.vpc.public_subnet_az1_id, module.vpc.public_subnet_az2_id]
+  # # network
+  # public_subnets = [module.vpc.public_subnet_az1_id, module.vpc.public_subnet_az2_id]
 }
 
-module "sg" {
-  source = "./modules/sg"
+# module "sg" {
+#   source = "./modules/sg"
+#   vpc_id = module.vpc.vpc_id
+# }
+module "push-web-ecs-service-sg" {
+  depends_on  = [module.vpc]
+  source      = "./modules/sg/modules/security_group"
+  description = "push-web-ecs-service-sg"
+
+  ingress_rules = [
+    {
+      from_port   = var.ecs_sg_ingress_from
+      to_port     = var.ecs_sg_ingress_to
+      protocol    = var.ecs_sg_ingress_protocol
+      cidr_blocks = [var.ecs_sg_ingress_cidr]
+      self        = false
+    }
+  ]
+
+  egress_rules = [
+    {
+      from_port   = var.ecs_sg_egress_from
+      to_port     = var.ecs_sg_egress_to
+      protocol    = var.ecs_sg_egress_protocol
+      cidr_blocks = [var.ecs_sg_egress_cidr]
+      self        = false
+    }
+  ]
+
+  name = "push-web-ecs-service-sg"
+  tags = {
+    Backup               = "False"
+    OwnerTeamEmail       = "mardelacruz@abs-cbn.com"
+    "abscbn-bus-unit"    = "DCT"
+    "abscbn-cost-centre" = "61250"
+    "abscbn-criticality" = "Silver"
+    "abscbn-env"         = "UAT"
+    "abscbn-product"     = "ent"
+    "abscbn-url"         = "pushweb.abs-cbn.com"
+  }
+  vpc_id = module.vpc.vpc_id
+}
+
+module "push-web-sg" {
+  depends_on  = [module.vpc]
+  source      = "./modules/sg/modules/security_group"
+  description = "push-web-sg"
+
+  ingress_rules = [
+    {
+      from_port   = var.web_sg_ingress_from
+      to_port     = var.web_sg_ingress_to
+      protocol    = var.web_sg_ingress_protocol
+      cidr_blocks = [var.web_sg_ingress_cidr]
+      self        = false
+    }
+  ]
+
+  egress_rules = [
+    {
+      from_port   = var.web_sg_egress_from
+      to_port     = var.web_sg_egress_to
+      protocol    = var.web_sg_egress_protocol
+      cidr_blocks = [var.web_sg_egress_cidr]
+      self        = false
+    }
+  ]
+
+  name = "push-web-sg"
+  tags = {
+    Backup               = "False"
+    OwnerTeamEmail       = "mardelacruz@abs-cbn.com"
+    "abscbn-bus-unit"    = "DCT"
+    "abscbn-cost-centre" = "61250"
+    "abscbn-criticality" = "Silver"
+    "abscbn-env"         = "UAT"
+    "abscbn-product"     = "ent"
+    "abscbn-url"         = "pushweb.abs-cbn.com"
+  }
   vpc_id = module.vpc.vpc_id
 }
 
 module "vpc" {
-  source = "./modules/vpc"
-  region = var.aws_region
-  project_name = var.project_name
-  vpc_cidr = var.vpc_cidr
-  public_subnet_az1_cidr = var.public_subnet_az1_cidr
-  public_subnet_az1_abs = var.public_subnet_az1_abs
-  public_subnet_az2_cidr =  var.public_subnet_az2_cidr
-  public_subnet_az2_abs =  var.public_subnet_az2_abs
-  private_app_subnet_az1_cidr = var.private_app_subnet_az1_cidr
-  private_app_subnet_az1_abs = var.private_app_subnet_az1_abs
-  private_app_subnet_az2_cidr = var.private_app_subnet_az2_cidr
-  private_app_subnet_az2_abs = var.private_app_subnet_az2_abs
+  source                       = "./modules/vpc"
+  region                       = var.aws_region
+  project_name                 = var.project_name
+  vpc_cidr                     = var.vpc_cidr
+  public_subnet_az1_cidr       = var.public_subnet_az1_cidr
+  public_subnet_az1_abs        = var.public_subnet_az1_abs
+  public_subnet_az2_cidr       = var.public_subnet_az2_cidr
+  public_subnet_az2_abs        = var.public_subnet_az2_abs
+  private_app_subnet_az1_cidr  = var.private_app_subnet_az1_cidr
+  private_app_subnet_az1_abs   = var.private_app_subnet_az1_abs
+  private_app_subnet_az2_cidr  = var.private_app_subnet_az2_cidr
+  private_app_subnet_az2_abs   = var.private_app_subnet_az2_abs
   private_data_subnet_az1_cidr = var.private_data_subnet_az1_cidr
-  private_data_subnet_az1_abs = var.private_data_subnet_az1_abs
+  private_data_subnet_az1_abs  = var.private_data_subnet_az1_abs
   private_data_subnet_az2_cidr = var.private_data_subnet_az2_cidr
-  private_data_subnet_az2_abs = var.private_data_subnet_az2_abs
-  vpc_tags = var.vpc_tags
+  private_data_subnet_az2_abs  = var.private_data_subnet_az2_abs
+  vpc_tags                     = var.vpc_tags
 }

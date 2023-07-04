@@ -18,12 +18,12 @@ module "ecs-cluster" {
 module "ecs-service" {
   source = "../ECS/modules/ecs-service"
   # taskdef
-  security_groups = var.security_groups
-  task_family    = var.task_family
-  task_role_name = var.task_role_name
-  task_cpu       = var.task_cpu
-  task_memory    = var.task_memory
-  network_mode   = var.network_mode
+  ecs_security_groups = var.ecs_security_groups
+  task_family         = var.task_family
+  task_role_name      = var.task_role_name
+  task_cpu            = var.task_cpu
+  task_memory         = var.task_memory
+  network_mode        = var.network_mode
 
   # container_definitions = var.container_definitions
   container_name     = var.container_name
@@ -42,8 +42,9 @@ module "ecs-service" {
   service_role_name = var.service_role_name
   tf_my_cluster     = var.tf_my_cluster
   # network
-  public_subnets = var.public_subnets
+  subnets = var.subnets
 
-  cluster_arn = module.ecs-cluster.cluster_arn
-  alb_tg_arn  = module.alb.target_group_arn
+  cluster_arn  = module.ecs-cluster.cluster_arn
+  alb_tg_arn   = module.alb.target_group_arn
+  ecs_lb_cport = var.ecs_lb_cport
 }

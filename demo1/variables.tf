@@ -48,6 +48,7 @@ variable "task_cpu" {}
 variable "task_memory" {}
 variable "task_role_name" {}
 variable "network_mode" {}
+variable "ecs_lb_cport" {}
 
 # Container Definition Variables
 variable "container_name" {}
@@ -83,3 +84,23 @@ variable "private_app_subnet_az2_abs" {}
 variable "private_data_subnet_az1_abs" {}
 variable "private_data_subnet_az2_abs" {}
 variable "vpc_tags" {}
+
+## Variables for SG
+# for ecs sg
+variable "ecs_sg_ingress_from" {}
+variable "ecs_sg_ingress_to" {}
+variable "ecs_sg_ingress_protocol" {}
+variable "ecs_sg_ingress_cidr" {}
+variable "ecs_sg_egress_from" {}
+variable "ecs_sg_egress_to" {}
+variable "ecs_sg_egress_protocol" {}
+variable "ecs_sg_egress_cidr" {}
+# for regular sg
+variable "web_sg_ingress_from" {}
+variable "web_sg_ingress_to" {}
+variable "web_sg_ingress_protocol" {}
+variable "web_sg_ingress_cidr" {}
+variable "web_sg_egress_from" {}
+variable "web_sg_egress_to" {}
+variable "web_sg_egress_protocol" {}
+variable "web_sg_egress_cidr" {}

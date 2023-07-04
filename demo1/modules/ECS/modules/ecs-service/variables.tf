@@ -1,5 +1,5 @@
-variable "security_groups" {}
-
+variable "ecs_security_groups" {}
+variable "ecs_lb_cport" {}
 # Variables for the task definition
 variable "task_family" {
   description = "Family for task (name)"
@@ -93,7 +93,7 @@ variable "tf_my_cluster" {
   type        = string
 }
 
-variable "public_subnets" {
+variable "subnets" {
   description = "Public subnets"
   type        = list(string)
 }
