@@ -9,6 +9,8 @@ module "lambda_function" {
   memory         = var.memory
   env_var        = var.env_var
   my_lambda_tags = var.my_lambda_tags
+
+  lambda_count = var.lambda_count
 }
 
 module "apigw" {
@@ -22,6 +24,8 @@ module "apigw" {
   usage_plan    = var.usage_plan
 
   lambda_invoke_arn = module.lambda_function.invoke_arn
-  function_name     = var.function_name
+  function_name     = module.lambda_function.name
+
+  apigw_count = var.apigw_count
 }
 

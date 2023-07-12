@@ -1,25 +1,44 @@
 variable "aws_region" {}
 # variables for apigw
-variable "apigw_name" {}
-variable "resource_name" {}
-variable "method_name" {}
-variable "stage_name" {}
-variable "api_key" {}
-variable "usage_plan" {}
+variable "apigw_count" {}
+variable "apigw_name" {
+  type = list(string)
+}
+variable "resource_name" {
+  type = list(string)
+}
+
+variable "method_name" {
+  type = list(string)
+}
+variable "stage_name" {
+  type = list(string)
+}
+variable "api_key" {
+  type = list(string)
+}
+variable "usage_plan" {
+  type = list(string)
+}
 
 # variables for lambda
-variable "function_name" {}
+variable "lambda_count" {}
+variable "function_name" {
+  type = list(string)
+}
 variable "runtime" {}
 variable "handler" {}
-variable "iam_role_name" {}
+variable "iam_role_name" {
+  type = list(string)
+}
 variable "memory" {}
 
 # environment variables for lambda
 variable "env_var" {
-  type = map(string)
+  type = list(map(string))
 }
 variable "my_lambda_tags" {
-  type = map(string)
+  type = list(map(string))
 }
 
 # ALB VARIABLES

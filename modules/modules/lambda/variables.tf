@@ -3,10 +3,13 @@ variable "aws_region" {
   description = "aws region"
   type        = string
 }
-
+variable "lambda_count" {
+  description = "lambda count"
+  type        = number
+}
 variable "function_name" {
   description = "aws region"
-  type        = string
+  type        = list(string)
 }
 
 variable "runtime" {
@@ -21,7 +24,7 @@ variable "handler" {
 
 variable "iam_role_name" {
   description = "role name"
-  type        = string
+  type        = list(string)
 }
 
 variable "memory" {
@@ -31,12 +34,10 @@ variable "memory" {
 
 variable "env_var" {
   description = "Environment variables for lambda"
-  type        = map(string)
-  default     = {}
+  type        = list(map(string))
 }
 
 variable "my_lambda_tags" {
   description = "Tags to set on the lambda"
-  type        = map(string)
-  default     = {}
+  type        = list(map(string))
 }

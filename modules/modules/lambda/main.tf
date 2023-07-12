@@ -1,4 +1,5 @@
 data "aws_iam_policy_document" "assume_role" {
+  count = var.lambda_count
   statement {
     effect = "Allow"
 
@@ -12,8 +13,9 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name               = var.iam_role_name
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  count              = var.lambda_count
+  name               = var.iam_role_name[count.index]
+  assume_role_policy = data.aws_iam_policy_document.assume_role[count.index].json
 }
 
 data "archive_file" "lambda" {
@@ -25,9 +27,10 @@ data "archive_file" "lambda" {
 resource "aws_lambda_function" "test_lambda" {
   # If the file is not in the current working directory you will need to include a
   # path.module in the filename.
+  count         = var.lambda_count
   filename      = "lambda_function_payload.zip"
-  function_name = var.function_name
-  role          = aws_iam_role.iam_for_lambda.arn
+  function_name = var.function_name[count.index]
+  role          = aws_iam_role.iam_for_lambda[count.index].arn
   handler       = var.handler
   memory_size   = var.memory
 
@@ -36,10 +39,10 @@ resource "aws_lambda_function" "test_lambda" {
   runtime = var.runtime
 
   environment {
-    variables = var.env_var
+    variables = var.env_var[count.index]
   }
 
-  tags = var.my_lambda_tags
+  tags = var.my_lambda_tags[count.index]
 }
 
 # resource "aws_lambda_permission" "lambda_permission" {

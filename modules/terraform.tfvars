@@ -1,26 +1,40 @@
 aws_region = "ap-southeast-1"
 # variables for apigw
-apigw_name    = "IMP-APIGW"
-resource_name = "{proxy+}"
-method_name   = "ANY"
-stage_name    = "dev"
-api_key       = "imp-api-key"
-usage_plan    = "imp-usage-plan"
+apigw_count   = 2
+apigw_name    = ["IMP-APIGW", "IMP-APIGW2"]
+resource_name = ["{proxy+}", "{proxy+}"]
+method_name   = ["ANY", "ANY"]
+stage_name    = ["dev", "dev"]
+api_key       = ["imp-api-key", "imp-api-key2"]
+usage_plan    = ["imp-usage-plan", "imp-usage-plan2"]
 
 # variables for lambda
-function_name = "imp-test-api"
+lambda_count  = 2
+function_name = ["imp-test-api", "imp-test2-api"]
 runtime       = "nodejs18.x"
 handler       = "index.handler"
-iam_role_name = "imp-test-api-role"
+iam_role_name = ["imp-test-api-role", "imp-test2-api"]
 memory        = 128
-env_var = {
-  var1 = "tfvars1"
-  var2 = "tfvars2"
-}
-my_lambda_tags = {
-  Application = "Push"
-  Environment = "Demo"
-}
+env_var = [
+  {
+    var1 = "tfvars1"
+    var2 = "tfvars2"
+  },
+  {
+    var1 = "tfvars3"
+    var2 = "tfvars4"
+  }
+]
+my_lambda_tags = [
+  {
+    Application = "Push"
+    Environment = "Demo"
+  },
+  {
+    Application = "Push"
+    Environment = "Demo"
+  }
+]
 # ALB VARIABLES
 
 listener_port     = 80

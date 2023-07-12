@@ -21,6 +21,8 @@ module "apigw-lambda" {
   api_key       = var.api_key
   usage_plan    = var.usage_plan
 
+  lambda_count = var.lambda_count
+  apigw_count  = var.apigw_count
   #   lambda_invoke_arn = module.lambda_function.invoke_arn
 }
 
